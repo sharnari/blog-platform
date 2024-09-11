@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 0 30px;
+}
+
+.nameBlog {
+  h1 {
+    font-size: 25px;
+    font-weight: 400;
+  }
+}
+
+.NavButton {
+  display: flex;
+  gap: 20px;
+  .sign {
+    margin-block: 0;
+    font-weight: 400;
+    height: 100;
+  }
+  .SignUp {
+    height: 3rem;
+    border-color: #52C41A;
+    .sign{
+      color: #008000;
+    }
+  }
+  .SignIn {
+    height: 3rem;
+  }
+}

@@ -1,0 +1,15 @@
+.item {
+  box-shadow: 0px 4px 12px 0px #00000026;
+  border-radius: 5px;
+  padding: 10px 25px;
+  background-color: white;
+}
+
+.posts {
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 30px;  
+}
