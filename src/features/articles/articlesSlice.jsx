@@ -13,23 +13,19 @@ const apiClient = axios.create({
 
 export const fetchArticles = createAsyncThunk(
   "articles/fetchActicles",
-  async function () {
-    try {
-      const response = await apiClient.get(`${articlesURL}`, {
-        params: {
-          limit: 5,
-          offset: 0,
-        },
-      });
-      if (!response.status >= 200 && !response.status <= 299) {
-        throw new Error(
-          `Could not fetch ${articlesURL} received ${response.status}`
-        );
-      }
-      return await response.data;
-    } catch (error) {
-      console.error("Error fetching articles:", error);
+  async function (offset) {
+    const response = await apiClient.get(`${articlesURL}`, {
+      params: {
+        limit: 5,
+        offset: offset,
+      },
+    });
+    if (!response.status >= 200 && !response.status <= 299) {
+      throw new Error(
+        `Could not fetch ${articlesURL} received ${response.status}`
+      );
     }
+    return await response.data;
   }
 );
 
@@ -40,6 +36,7 @@ const articlesSlice = createSlice({
       currentItem: 1,
     },
     articles: [],
+    articlesCount: null,
     statusLoading: null,
     statusError: null,
   },
@@ -58,11 +55,12 @@ const articlesSlice = createSlice({
         state.statusLoading = false;
         state.statusError = null;
         state.articles = action.payload.articles;
-        console.log("Fetched articles:", action.payload);
+        state.articlesCount = action.payload.articlesCount;
       })
       .addCase(fetchArticles.rejected, (state) => {
         state.statusLoading = false;
         state.statusError = "Error fetching articles";
+        console.log(state.statusError);
       });
   },
 });

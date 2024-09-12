@@ -1,10 +1,11 @@
 import React from "react";
 import { format } from "date-fns";
+import { Avatar } from 'antd'
+import { UserOutlined } from '@ant-design/icons';
 
 import styles from "./post-item.module.scss";
 
 import likeIcon from "../../assets/like.svg";
-import avatarIcon from "../../assets/avatar.svg"
 
 
 const PostItem = ({ post }) => {
@@ -33,7 +34,7 @@ const PostItem = ({ post }) => {
             <p className={styles.name}>{post.author.username}</p>
             <p className={styles.date}>{createdAt}</p>
           </div>
-          <img src={ post.author.image || avatarIcon} alt="avatar" className={styles.authorImage} />
+          <Avatar size={58} src={post.author.image ? post.author.image : null} icon={!post.author.image ? <UserOutlined /> : null} />
         </div>
       </div>
       <div className="post-body">

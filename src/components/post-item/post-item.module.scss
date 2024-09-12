@@ -5,7 +5,12 @@
   margin: 0;
   margin-bottom: 15px;
   margin-right: 1rem;
-
+  width: 400px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-clamp: 1;
 }
 
 .likeIcon {
@@ -62,11 +67,6 @@
   display: flex;
 }
 
-.authorImage {
-  border-radius: 50%;
-  height: 56px;
-}
-
 .authorInfo {
   display: flex;
   flex-direction: column;
@@ -93,5 +93,14 @@
 }
 
 .tagsList {
-  display: flex;
+  // display: flex;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: horizontal;
+  overflow: auto;
+  line-clamp: 1;
+  width: 570px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
