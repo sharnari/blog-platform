@@ -4,8 +4,15 @@ import { Pagination, ConfigProvider } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { changePageOfPagination } from "../../features/articles/articlesSlice";
 import { ErrorMessage } from "../error-message/error-message";
+import Article from "../article";
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignIn from '../sign-in'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import styles from "./App.module.scss";
 
@@ -45,6 +52,7 @@ function App() {
         {contextHolder}
         <AppHeader />
         <Routes>
+          <Route path="/" element={<Navigate to="/articles" />} />
           <Route
             path="/articles"
             element={
@@ -65,6 +73,8 @@ function App() {
               </>
             }
           />
+          <Route path="/articles/:slug" element={<Article />} />
+          <Route path="/sign-in" element={<SignIn/>} />
         </Routes>
       </div>
     </Router>

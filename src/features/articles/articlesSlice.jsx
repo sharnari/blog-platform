@@ -20,12 +20,25 @@ export const fetchArticles = createAsyncThunk(
         offset: offset,
       },
     });
-    if (!response.status >= 200 && !response.status <= 299) {
+    if (response.status < 200 || response.status > 299) {
       throw new Error(
         `Could not fetch ${articlesURL} received ${response.status}`
       );
     }
     return await response.data;
+  }
+);
+
+export const fetchArticle = createAsyncThunk(
+  "articles/fetchActicle",
+  async function (slug) {
+    const response = await apiClient.get(`/articles/${slug}`);
+    if (response.status < 200 || response.status > 299) {
+      throw new Error(
+        `Could not fetch /article/${slug} received ${response.status}`
+      );
+    }
+    return await response.data.article
   }
 );
 
@@ -36,6 +49,7 @@ const articlesSlice = createSlice({
       currentItem: 1,
     },
     articles: [],
+    currentArticle: null,
     articlesCount: null,
     statusLoading: null,
     statusError: null,
@@ -60,6 +74,22 @@ const articlesSlice = createSlice({
       .addCase(fetchArticles.rejected, (state) => {
         state.statusLoading = false;
         state.statusError = "Error fetching articles";
+        console.log(state.statusError);
+      })
+
+      .addCase(fetchArticle.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchArticle.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+        state.currentArticle = action.payload;
+        // state.articles = [];
+      })
+      .addCase(fetchArticle.rejected, (state) => {
+        state.statusLoading = false;
+        state.statusError = "Error fetching article";
         console.log(state.statusError);
       });
   },

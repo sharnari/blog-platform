@@ -2,6 +2,7 @@ import React from "react";
 import { format } from "date-fns";
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom'
 
 import styles from "./post-item.module.scss";
 
@@ -14,7 +15,7 @@ const PostItem = ({ post }) => {
     <React.Fragment>
       <div className={styles.postHeader}>
         <div className={styles.postName}>
-          <h5 className={styles.title}>{post.title}</h5>
+          <Link to={`/articles/${post.slug}`} className={styles.title}>{post.title}</Link>
           <div className={styles.likes}>
             <img src={likeIcon} alt="like" className={styles.likeIcon} />
             <span className={styles.likesCount}> {post.favoritesCount}</span>

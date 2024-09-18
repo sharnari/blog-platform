@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Typography, ConfigProvider } from "antd";
+import { Link } from "react-router-dom";
 
 import styles from "./app-header.module.scss";
 
@@ -18,12 +19,14 @@ const AppHeader = () => {
   return (
     <div className={styles.header}>
       <div className={styles.nameBlog}>
-        <h1>Realworld Blog</h1>
+        <Link style={{textDecoration: 'none'}} to="articles">
+          <h1>Realworld Blog</h1>
+        </Link>
       </div>
       <nav className={styles.NavButton}>
         <Button className={styles.SignIn} type="text">
           <Title level={4} className={styles.sign}>
-            Sing In
+            <Link style={{color: 'black'}} to='sign-in'>Sing In</Link>
           </Title>
         </Button>
         <ConfigProvider theme={theme}>
