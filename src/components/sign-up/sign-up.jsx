@@ -1,19 +1,27 @@
 import { Button, Form, Input, Checkbox } from "antd";
 import { Link } from "react-router-dom";
-// import { useForm } from 'react-hook-form'
-
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../features/auth/authSlice';
 import styles from "./sing-up.module.scss";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
 
   const onFinish = (values) => {
+    const userData = {
+      username: values.name,
+      email: values.email,
+      password: values.password,
+    };
     console.log("Success:", values);
+    dispatch(registerUser(userData))
+
   };
   
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  // const { register, handleSubmit, formState: { errors } } = useForm({mode: "onchange"});
+
   return (
     <section className={styles.form}>
       <h1>Create new account</h1>
