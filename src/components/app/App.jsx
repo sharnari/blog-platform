@@ -7,6 +7,7 @@ import { ErrorMessage } from "../error-message/error-message";
 import Article from "../article";
 import { useEffect } from "react";
 import SignIn from '../sign-in'
+import SignUp from '../sign-up'
 import {
   BrowserRouter as Router,
   Routes,
@@ -75,6 +76,7 @@ function App() {
           />
           <Route path="/articles/:slug" element={<Article />} />
           <Route path="/sign-in" element={<SignIn/>} />
+          <Route path="/sign-up" element={<SignUp/>} />
         </Routes>
       </div>
     </Router>

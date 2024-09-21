@@ -41,7 +41,11 @@ const SignIn = () => {
           rules={[
             {
               required: true,
-              message: "Please input your email!",
+              message: "Email address is required",
+            },
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
             },
           ]}
         >
@@ -73,7 +77,7 @@ const SignIn = () => {
       </Form>
       <div className={styles.bottomForm}>
         <p>
-          Don’t have an account? <Link className={styles.noUnderline}>Sign Up</Link>.
+          Don’t have an account? <Link to="/sign-up" className={styles.noUnderline}>Sign Up</Link>.
         </p>
       </div>
     </section>

@@ -32,7 +32,7 @@ const AppHeader = () => {
         <ConfigProvider theme={theme}>
           <Button className={styles.SignUp}>
             <Title level={4} className={styles.sign}>
-              Sign Up
+              <Link to="sign-up" style={{color: '#52C41A'}} >Sign Up</Link>
             </Title>
           </Button>
         </ConfigProvider>
