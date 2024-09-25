@@ -7,6 +7,11 @@ export const ErrorMessage = () => {
       type: "error",
       content: errorContent || "Error",
       duration: 10,
+      style: {
+        maxWidth:'400px',
+        margin: '0 auto',
+        wordWrap: 'break-word',
+      }
     });
   };
   return { contextHolder, showError };

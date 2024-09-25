@@ -1,29 +1,56 @@
 import { Button, Form, Input, Checkbox } from "antd";
-import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../features/auth/authSlice";
+import { useEffect } from "react";
+import { ErrorMessage } from "../error-message/error-message";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { setError } from "../../features/auth/authSlice";
+
 import styles from "./sing-up.module.scss";
 
 const SignUp = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userError = useSelector((state) => state.auth.error);
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  const onFinish = (values) => {
+  const onFinish = ({ username, email, password }) => {
     const userData = {
-      username: values.name,
-      email: values.email,
-      password: values.password,
+      user: {
+        username,
+        email,
+        password,
+      },
     };
-    console.log("Success:", values);
-    dispatch(registerUser(userData))
-
+    
+    console.log("Success:", userData);
+    dispatch(registerUser(userData));
+    setRegistrationSuccess(true);
   };
-  
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  const { contextHolder, showError } = ErrorMessage();
+
+  useEffect(() => {
+    if (userError) {
+      console.log(userError);
+      showError(userError);
+    } else if (userInfo && registrationSuccess) {
+      navigate("/sign-in");
+    }
+    return () => {
+      dispatch(setError(null))
+    }
+  }, [ dispatch, userError, showError, navigate, userInfo, registrationSuccess]);
+
   return (
     <section className={styles.form}>
+      {contextHolder}
       <h1>Create new account</h1>
       <Form
         name="basic"
@@ -47,7 +74,7 @@ const SignUp = () => {
       >
         <Form.Item
           label="Username"
-          name="name"
+          name="username"
           rules={[
             {
               required: true,
@@ -57,7 +84,7 @@ const SignUp = () => {
               min: 3,
               max: 20,
               message: "Username must be between 3 and 20 characters",
-            }
+            },
           ]}
         >
           <Input placeholder="Username" />
@@ -72,8 +99,8 @@ const SignUp = () => {
               message: "Email address is required",
             },
             {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
+              type: "email",
+              message: "The input is not valid E-mail!",
             },
           ]}
         >
@@ -107,7 +134,7 @@ const SignUp = () => {
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
+                if (!value || getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error("Passwords must match"));
@@ -124,7 +151,13 @@ const SignUp = () => {
           rules={[
             {
               validator: (_, value) =>
-                value ? Promise.resolve() : Promise.reject(new Error('You must agree to the processing of your personal information!')),
+                value
+                  ? Promise.resolve()
+                  : Promise.reject(
+                      new Error(
+                        "You must agree to the processing of your personal information!"
+                      )
+                    ),
             },
           ]}
         >

@@ -23,7 +23,7 @@ const PostItem = ({ post }) => {
           <div className={styles.tagsContainer}>
             <ul className={styles.tagsList}>
               {
-              post.tagList.map((el, index) => {
+              post.tagList?.map((el, index) => {
                 return <li key={index} className={styles.tagItem}>{el}</li>  
               })
               }

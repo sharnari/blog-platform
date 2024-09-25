@@ -1,0 +1,20 @@
+.notFound {
+  margin: 0 auto;
+  height: 88vh;
+  justify-content: center;
+  color: red;
+  font-size: 228px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.1;
+  p, h1 {
+    width: fit-content;
+    margin: 0;
+  }
+  p {
+    font-size: 90px;
+  }
+}
+
