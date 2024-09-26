@@ -59,6 +59,7 @@ const userSlice = createSlice({
     statusLoading: null,
     error: null,
     signInAuth: false,
+    token: null,
   },
   reducers: {
     setSignIn(state, action) {
@@ -68,13 +69,16 @@ const userSlice = createSlice({
     logOutUser(state) {
       state.signInAuth = false
       localStorage.removeItem("token");
+      state.token = null
       state.userInfo = null
     },
 
     setError(state, action) {
       state.error = action.payload
+    },
+    setToken(state, action) {
+      state.token = action.payload
     }
-
   },
   extraReducers: (builder) => {
     builder
@@ -100,6 +104,7 @@ const userSlice = createSlice({
       state.statusLoading = null
       state.userInfo = action.payload.user;
       localStorage.setItem("token", action.payload.user.token);
+      state.token = action.payload.user.token
     })
     .addCase(loginUser.rejected, (state, action) => {
       state.error = action.error.message
@@ -134,6 +139,6 @@ const userSlice = createSlice({
   }
 })
 
-export const { setSignIn, logOutUser, setError } = userSlice.actions;
+export const { setSignIn, logOutUser, setError, setToken } = userSlice.actions;
 
 export default userSlice.reducer;

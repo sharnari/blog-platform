@@ -9,15 +9,15 @@ import { useEffect } from "react";
 import SignIn from "../sign-in";
 import SignUp from "../sign-up";
 import EditProfile from "../edit-profile";
-import NotFound from '../not-found'
-
+import NotFound from "../not-found";
+import CreateArticle from "../create-article";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { setSignIn, getCurrentUser } from "../../features/auth/authSlice";
+import { setSignIn, getCurrentUser, setToken } from "../../features/auth/authSlice";
 
 import styles from "./App.module.scss";
 
@@ -42,8 +42,7 @@ function App() {
   );
   const articlesCount = useSelector((state) => state.articles.articlesCount);
   const statusError = useSelector((state) => state.articles.statusError);
-  // const isAuth = useSelector((state) => state.auth.signInAuth);
-  // const statusLoading = useSelector((state) => state.auth.statusLoading);
+  const token = useSelector(state => state.auth.token)
   const pageSize = 5;
   const { contextHolder, showError } = ErrorMessage();
   useEffect(() => {
@@ -51,6 +50,7 @@ function App() {
     if (token) {
       dispatch(setSignIn(true));
       dispatch(getCurrentUser(token));
+      dispatch(setToken(token))
     }
   }, [dispatch]);
 
@@ -59,7 +59,7 @@ function App() {
       showError(statusError);
     }
   }, [statusError, showError]);
-  
+
   return (
     <Router>
       <div className={styles.App}>
@@ -74,30 +74,68 @@ function App() {
                 <PostList />
                 <ConfigProvider theme={theme}>
                   <Pagination
-                      className={styles.pagination}
-                      align="center"
-                      defaultCurrent={1}
-                      total={articlesCount}
-                      onChange={changePage}
-                      current={currentItemOfPagination}
-                      showSizeChanger={false}
-                      pageSize={pageSize}
+                    className={styles.pagination}
+                    align="center"
+                    defaultCurrent={1}
+                    total={articlesCount}
+                    onChange={changePage}
+                    current={currentItemOfPagination}
+                    showSizeChanger={false}
+                    pageSize={pageSize}
                   />
                 </ConfigProvider>
               </>
             }
           />
           <Route path="/articles/:slug" element={<Article />} />
-          <Route path="/sign-in" element={
-              !localStorage.getItem("token") ? <SignIn /> : <Navigate to="/articles" replace />
-            } />
-          <Route path="/sign-up" element={
-              !localStorage.getItem("token") ? <SignUp /> : <Navigate to="/articles" replace />
-            } />
+          <Route
+            path="/sign-in"
+            element={
+              !token ? (
+                <SignIn />
+              ) : (
+                <Navigate to="/articles" replace />
+              )
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              !token ? (
+                <SignUp />
+              ) : (
+                <Navigate to="/articles" replace />
+              )
+            }
+          />
           <Route
             path="/profile"
             element={
-              localStorage.getItem("token") ? <EditProfile /> : <Navigate to="/sign-in" replace />
+              token ? (
+                <EditProfile />
+              ) : (
+                <Navigate to="/sign-in" replace />
+              )
+            }
+          />
+          <Route
+            path="new-article"
+            element={
+              token ? (
+                <CreateArticle />
+              ) : (
+                <Navigate to="/sign-in" replace />
+              )
+            }
+          />
+          <Route
+            path="articles/:slug/edit"
+            element={
+              token ? (
+                <CreateArticle />
+              ) : (
+                <Navigate to="/sign-in" replace />
+              )
             }
           />
           <Route path="*" element={<NotFound />} />

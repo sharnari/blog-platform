@@ -5,6 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 import { logOutUser } from "../../features/auth/authSlice";
+import { setEditMode } from "../../features/articles/articlesSlice"
 
 import styles from "./app-header.module.scss";
 
@@ -22,15 +23,18 @@ const theme = {
 const AppHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const signInAuth = useSelector((state) => state.auth.signInAuth);
+  // const signInAuth = useSelector((state) => state.auth.signInAuth);
   const userInfo = useSelector((state) => state.auth.userInfo);
-  console.log('Польльзователь зарегистирован: ', signInAuth);
+  const token = useSelector((state) => state.auth.token);
 
   const hanldeLogOut = () => {
     dispatch(logOutUser());
-    navigate("/sign-in")
-
+    navigate("/sign-in");
   };
+
+  const setMode = () => {
+    dispatch(setEditMode(false))
+  }
 
   return (
     <div className={styles.header}>
@@ -39,7 +43,7 @@ const AppHeader = () => {
           <h1>Realworld Blog</h1>
         </Link>
       </div>
-      {!signInAuth ? (
+      {!token ? (
         <nav className={styles.NavButton}>
           <Link style={{ color: "black" }} to="sign-in">
             <Button className={styles.SignIn} type="text">
@@ -61,13 +65,13 @@ const AppHeader = () => {
       ) : (
         <nav className={styles.NavButton}>
           <ConfigProvider theme={theme}>
-            <Button className={styles.SignUp}>
-              <Title level={4} className={styles.sign}>
-                <Link to="#" style={{ color: "#52C41A" }}>
+            <Link to="new-article">
+              <Button className={styles.SignUp} onClick={setMode}>
+                <Title level={4} className={styles.sign}>
                   Create article
-                </Link>
-              </Title>
-            </Button>
+                </Title>
+              </Button>
+            </Link>
           </ConfigProvider>
           <Link to="profile">
             <Button className={styles.SignIn} type="text">

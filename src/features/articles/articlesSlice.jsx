@@ -11,6 +11,16 @@ const apiClient = axios.create({
   },
 });
 
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Token ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 export const fetchArticles = createAsyncThunk(
   "articles/fetchActicles",
   async function (offset) {
@@ -42,6 +52,46 @@ export const fetchArticle = createAsyncThunk(
   }
 );
 
+export const fetchMakeArticle = createAsyncThunk(
+  "articles/makeArticle",
+  async function (articleData) {
+    const response = await apiClient.post('/articles', articleData)
+    return response.data;
+  }
+)
+
+export const fetchUpdateArticle = createAsyncThunk(
+  "articles/updateArticle",
+  async function ({ articleData, slug }) {
+    const response = await apiClient.put(`/articles/${slug}`, articleData)
+    return response.data;
+  }
+)
+
+export const fetchDeleteArticle = createAsyncThunk(
+  "articles/deleteArticle",
+  async function (slug) {
+    const response = await apiClient.delete(`/articles/${slug}`)
+    return response.data;
+  }
+)
+
+export const fetchSetLike = createAsyncThunk(
+  "articles/setLike",
+  async function (slug) {
+    const response = await apiClient.post(`/articles/${slug}/favorite`)
+    return response.data;
+  }
+)
+
+export const fetchDeleteLike = createAsyncThunk(
+  "articles/deleteLike",
+  async function (slug) {
+    const response = await apiClient.delete(`/articles/${slug}/favorite`)
+    return response.data;
+  }
+)
+
 const articlesSlice = createSlice({
   name: "articles",
   initialState: {
@@ -53,11 +103,18 @@ const articlesSlice = createSlice({
     articlesCount: null,
     statusLoading: null,
     statusError: null,
+    modeEdit: false,
   },
   reducers: {
     changePageOfPagination(state, action) {
       state.pagination.currentItem = action.payload;
     },
+    setEditMode(state, action) {
+      state.modeEdit = action.payload
+    },
+    setCurrentArticle(state, action) {
+      state.currentArticle = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -85,16 +142,81 @@ const articlesSlice = createSlice({
         state.statusLoading = false;
         state.statusError = null;
         state.currentArticle = action.payload;
-        // state.articles = [];
       })
       .addCase(fetchArticle.rejected, (state) => {
         state.statusLoading = false;
         state.statusError = "Error fetching article";
         console.log(state.statusError);
+      })
+
+      .addCase(fetchMakeArticle.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchMakeArticle.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+         console.log("answer to make article: ",action.payload);
+      })
+      .addCase(fetchMakeArticle.rejected, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = action.error.message;
+      })
+
+      .addCase(fetchUpdateArticle.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchUpdateArticle.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+      })
+      .addCase(fetchUpdateArticle.rejected, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = action.error.message;
+      })
+
+      .addCase(fetchDeleteArticle.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchDeleteArticle.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+      })
+      .addCase(fetchDeleteArticle.rejected, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = action.error.message;
+      })
+
+      .addCase(fetchSetLike.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchSetLike.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+      })
+      .addCase(fetchSetLike.rejected, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = action.error.message;
+      })
+
+      .addCase(fetchDeleteLike.pending, (state) => {
+        state.statusLoading = true;
+        state.statusError = null;
+      })
+      .addCase(fetchDeleteLike.fulfilled, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = null;
+      })
+      .addCase(fetchDeleteLike.rejected, (state, action) => {
+        state.statusLoading = false;
+        state.statusError = action.error.message;
       });
   },
 });
 
-export const { changePageOfPagination } = articlesSlice.actions;
+export const { changePageOfPagination, setEditMode, setCurrentArticle } = articlesSlice.actions;
 
 export default articlesSlice.reducer;
