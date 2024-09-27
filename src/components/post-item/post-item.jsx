@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { fetchDeleteLike, fetchSetLike } from '../../features/articles/articlesSlice'
 import PropTypes from 'prop-types'
+import uniqid from 'uniqid'
 
 import styles from './post-item.module.scss'
 
@@ -54,8 +55,8 @@ const PostItem = ({ post }) => {
           </div>
           <div className={styles.tagsContainer}>
             <ul className={styles.tagsList}>
-              {post.tagList?.map((el, index) => (
-                <li key={index} className={styles.tagItem}>
+              {post.tagList?.map((el) => (
+                <li key={uniqid(el.createdAt)} className={styles.tagItem}>
                   {el}
                 </li>
               ))}
