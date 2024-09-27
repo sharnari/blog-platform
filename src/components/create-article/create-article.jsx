@@ -1,24 +1,24 @@
 import { useEffect } from 'react'
-import { Button, Form, Input, Flex } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMakeArticle, fetchUpdateArticle } from '../../features/articles/articlesSlice';
+import { Button, Form, Input, Flex } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchMakeArticle, fetchUpdateArticle } from '../../features/articles/articlesSlice'
 import { setCurrentArticle } from '../../features/articles/articlesSlice'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
-import styles from "./create-article.module.scss";
+import styles from './create-article.module.scss'
 
 const CreateArticle = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const modeEdit = useSelector((state) => state.articles.modeEdit);
-  const currentArticle = useSelector((state) => state.articles.currentArticle);
-  const [form] = Form.useForm();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const modeEdit = useSelector((state) => state.articles.modeEdit)
+  const currentArticle = useSelector((state) => state.articles.currentArticle)
+  const [form] = Form.useForm()
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+    console.log('Failed:', errorInfo)
+  }
 
   const onFinish = (values) => {
-    const tagsArray = values.tags ? values.tags.map(tag => tag || "") : [];
+    const tagsArray = values.tags ? values.tags.map((tag) => tag || '') : []
     const userData = {
       article: {
         title: values.title,
@@ -26,15 +26,15 @@ const CreateArticle = () => {
         body: values.text,
         tagList: tagsArray,
       },
-    };
+    }
 
-    console.log("Success:", userData);
-    modeEdit ? dispatch(fetchUpdateArticle({ articleData: userData, slug: currentArticle.slug })) :
-    dispatch(fetchMakeArticle(userData))
-    .then(() => {
-      navigate('/');
-    })
-  };
+    console.log('Success:', userData)
+    modeEdit
+      ? dispatch(fetchUpdateArticle({ articleData: userData, slug: currentArticle.slug }))
+      : dispatch(fetchMakeArticle(userData)).then(() => {
+          navigate('/')
+        })
+  }
 
   useEffect(() => {
     if (modeEdit && currentArticle) {
@@ -43,9 +43,9 @@ const CreateArticle = () => {
         description: currentArticle.description,
         text: currentArticle.body,
         tags: currentArticle.tagList || [],
-      });
-    }else {
-      form.resetFields();
+      })
+    } else {
+      form.resetFields()
     }
   }, [modeEdit, currentArticle, form])
 
@@ -53,11 +53,11 @@ const CreateArticle = () => {
     return () => {
       setCurrentArticle(false)
     }
-  },)
+  })
 
   return (
     <section className={styles.form}>
-      <h1>{modeEdit ? "Edit Article" : "Create new article"}</h1>
+      <h1>{modeEdit ? 'Edit Article' : 'Create new article'}</h1>
       <Form
         form={form}
         name="basic"
@@ -79,7 +79,7 @@ const CreateArticle = () => {
           rules={[
             {
               required: true,
-              message: "Title is required",
+              message: 'Title is required',
             },
           ]}
         >
@@ -91,7 +91,7 @@ const CreateArticle = () => {
           rules={[
             {
               required: true,
-              message: "Description is required",
+              message: 'Description is required',
             },
           ]}
         >
@@ -104,40 +104,40 @@ const CreateArticle = () => {
           rules={[
             {
               required: true,
-              message: "Text is required",
+              message: 'Text is required',
             },
           ]}
         >
-          <Input.TextArea placeholder='Text' autoSize={{ minRows: 6 }} />
+          <Input.TextArea placeholder="Text" autoSize={{ minRows: 6 }} />
         </Form.Item>
         <Form.Item
-        label='Tags'
+          label="Tags"
           wrapperCol={{
             offset: 0,
             span: 8,
           }}
         >
-          <Form.List name='tags'>
-              {(fields, { add, remove }) => (
-                <Flex gap={15}>
-                  <Flex gap={15} vertical>
-                    {fields.map((field) => (
-                      <Flex key={field.key} gap={15}>
-                        <Form.Item name={[field.name]} style={{ margin: 0 }}>
-                          <Input placeholder='Tag' style={{ width: 250 }} />
-                        </Form.Item>
-                        <Button type='primary' danger ghost size='large' onClick={() => remove(field.name)}>
-                          Delete
-                        </Button>
-                      </Flex>
-                    ))}
-                  </Flex>
-                  <Button type='primary' ghost size='large' onClick={() => add()} style={{ alignSelf: "flex-end" }}>
-                    Add tag
-                  </Button>
+          <Form.List name="tags">
+            {(fields, { add, remove }) => (
+              <Flex gap={15}>
+                <Flex gap={15} vertical>
+                  {fields.map((field) => (
+                    <Flex key={field.key} gap={15}>
+                      <Form.Item name={[field.name]} style={{ margin: 0 }}>
+                        <Input placeholder="Tag" style={{ width: 250 }} />
+                      </Form.Item>
+                      <Button type="primary" danger ghost size="large" onClick={() => remove(field.name)}>
+                        Delete
+                      </Button>
+                    </Flex>
+                  ))}
                 </Flex>
-              )}
-            </Form.List>
+                <Button type="primary" ghost size="large" onClick={() => add()} style={{ alignSelf: 'flex-end' }}>
+                  Add tag
+                </Button>
+              </Flex>
+            )}
+          </Form.List>
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -145,13 +145,13 @@ const CreateArticle = () => {
             span: 8,
           }}
         >
-          <Button size={"large"} type="primary" htmlType="submit" block>
+          <Button size={'large'} type="primary" htmlType="submit" block>
             Send
           </Button>
         </Form.Item>
       </Form>
     </section>
-  );
-};
+  )
+}
 
 export default CreateArticle

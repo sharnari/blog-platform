@@ -1,36 +1,36 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Typography, ConfigProvider } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
-import { Avatar } from "antd";
-import { logOutUser } from "../../features/auth/authSlice";
-import { setEditMode } from "../../features/articles/articlesSlice"
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Button, Typography, ConfigProvider } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom'
+import { Avatar } from 'antd'
+import { logOutUser } from '../../features/auth/authSlice'
+import { setEditMode } from '../../features/articles/articlesSlice'
 
-import styles from "./app-header.module.scss";
+import styles from './app-header.module.scss'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const theme = {
   token: {
-    colorPrimary: "#52C41A",
-    colorPrimaryHover: "#389E0D",
-    colorPrimaryActive: "#237804",
-    defaultGhostBorderColor: "#52C41A",
+    colorPrimary: '#52C41A',
+    colorPrimaryHover: '#389E0D',
+    colorPrimaryActive: '#237804',
+    defaultGhostBorderColor: '#52C41A',
   },
-};
+}
 
 const AppHeader = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   // const signInAuth = useSelector((state) => state.auth.signInAuth);
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  const token = useSelector((state) => state.auth.token);
+  const userInfo = useSelector((state) => state.auth.userInfo)
+  const token = useSelector((state) => state.auth.token)
 
   const hanldeLogOut = () => {
-    dispatch(logOutUser());
-    navigate("/sign-in");
-  };
+    dispatch(logOutUser())
+    navigate('/sign-in')
+  }
 
   const setMode = () => {
     dispatch(setEditMode(false))
@@ -39,13 +39,13 @@ const AppHeader = () => {
   return (
     <div className={styles.header}>
       <div className={styles.nameBlog}>
-        <Link style={{ textDecoration: "none" }} to="articles">
+        <Link style={{ textDecoration: 'none' }} to="articles">
           <h1>Realworld Blog</h1>
         </Link>
       </div>
       {!token ? (
         <nav className={styles.NavButton}>
-          <Link style={{ color: "black" }} to="sign-in">
+          <Link style={{ color: 'black' }} to="sign-in">
             <Button className={styles.SignIn} type="text">
               <Title level={4} className={styles.sign}>
                 Sing In
@@ -53,7 +53,7 @@ const AppHeader = () => {
             </Button>
           </Link>
           <ConfigProvider theme={theme}>
-            <Link to="sign-up" style={{ color: "#52C41A" }}>
+            <Link to="sign-up" style={{ color: '#52C41A' }}>
               <Button className={styles.SignUp}>
                 <Title level={4} className={styles.sign}>
                   Sign Up
@@ -85,13 +85,9 @@ const AppHeader = () => {
               />
             </Button>
           </Link>
-          <Button
-            className={styles.SignOutStyle}
-            type="text"
-            onClick={hanldeLogOut}
-          >
+          <Button className={styles.SignOutStyle} type="text" onClick={hanldeLogOut}>
             <Title level={4} className={styles.sign}>
-              <Link style={{ color: "black" }} to="#">
+              <Link style={{ color: 'black' }} to="#">
                 Log Out
               </Link>
             </Title>
@@ -99,7 +95,7 @@ const AppHeader = () => {
         </nav>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default AppHeader;
+export default AppHeader

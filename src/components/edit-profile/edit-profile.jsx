@@ -1,20 +1,20 @@
-import { Button, Form, Input } from "antd";
-import { ErrorMessage } from "../error-message/error-message";
-import { useSelector, useDispatch } from "react-redux";
+import { Button, Form, Input } from 'antd'
+import { ErrorMessage } from '../error-message/error-message'
+import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import { setError, updateUser } from "../../features/auth/authSlice";
+import { setError, updateUser } from '../../features/auth/authSlice'
 
-import styles from "./edit-profile.module.scss";
+import styles from './edit-profile.module.scss'
 
 const EditProfile = () => {
-  const dispatch = useDispatch();
-  const { contextHolder, showError } = ErrorMessage();
-  const userError = useSelector((state) => state.auth.error);
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  const [form] = Form.useForm();
+  const dispatch = useDispatch()
+  const { contextHolder, showError } = ErrorMessage()
+  const userError = useSelector((state) => state.auth.error)
+  const userInfo = useSelector((state) => state.auth.userInfo)
+  const [form] = Form.useForm()
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+    console.log('Failed:', errorInfo)
+  }
 
   const onFinish = (values) => {
     const userData = {
@@ -24,29 +24,29 @@ const EditProfile = () => {
         password: values.password,
         image: values.url,
       },
-    };
-    console.log("Success:", userData);
+    }
+    console.log('Success:', userData)
     dispatch(updateUser(userData)).then(() => {
-      form.resetFields(['password']);
-    });
-  };
+      form.resetFields(['password'])
+    })
+  }
 
   useEffect(() => {
     if (userError) {
-      console.log(userError);
-      showError(userError);
+      console.log(userError)
+      showError(userError)
     }
     return () => {
       dispatch(setError(null))
     }
-  }, [dispatch, userError, showError]);
+  }, [dispatch, userError, showError])
 
   useEffect(() => {
     form.setFieldsValue({
-      username: userInfo?.username || "",
-      email: userInfo?.email || "",
-    });
-  }, [userInfo, form]);
+      username: userInfo?.username || '',
+      email: userInfo?.email || '',
+    })
+  }, [userInfo, form])
 
   return (
     <section className={styles.form}>
@@ -67,8 +67,8 @@ const EditProfile = () => {
           maxWidth: 600,
         }}
         initialValues={{
-          username: userInfo?.username || "",
-          email: userInfo?.email || "",
+          username: userInfo?.username || '',
+          email: userInfo?.email || '',
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -80,12 +80,12 @@ const EditProfile = () => {
           rules={[
             {
               required: true,
-              message: "Username is required",
+              message: 'Username is required',
             },
             {
               min: 3,
               max: 20,
-              message: "Username must be between 3 and 20 characters",
+              message: 'Username must be between 3 and 20 characters',
             },
           ]}
         >
@@ -97,11 +97,11 @@ const EditProfile = () => {
           rules={[
             {
               required: true,
-              message: "Email address is required",
+              message: 'Email address is required',
             },
             {
-              type: "email",
-              message: "The input is not valid E-mail!",
+              type: 'email',
+              message: 'The input is not valid E-mail!',
             },
           ]}
         >
@@ -113,12 +113,12 @@ const EditProfile = () => {
           rules={[
             {
               required: true,
-              message: "Input new password!",
+              message: 'Input new password!',
             },
             {
               min: 6,
               max: 40,
-              message: "Password must be between 6 and 40 characters",
+              message: 'Password must be between 6 and 40 characters',
             },
           ]}
         >
@@ -129,8 +129,8 @@ const EditProfile = () => {
           name="url"
           rules={[
             {
-              type: "url",
-              message: "Please enter a valid URL",
+              type: 'url',
+              message: 'Please enter a valid URL',
             },
           ]}
         >
@@ -142,13 +142,13 @@ const EditProfile = () => {
             span: 24,
           }}
         >
-          <Button size={"large"} type="primary" htmlType="submit" block>
+          <Button size={'large'} type="primary" htmlType="submit" block>
             Save
           </Button>
         </Form.Item>
       </Form>
     </section>
-  );
-};
+  )
+}
 
 export default EditProfile

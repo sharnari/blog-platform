@@ -1,6 +1,6 @@
-import { Skeleton } from "antd";
+import { Skeleton } from 'antd'
 
-import styles from "./post-list.module.scss";
+import styles from './post-list.module.scss'
 
 export const renderSkeletons = () => {
   return Array(5)
@@ -9,5 +9,5 @@ export const renderSkeletons = () => {
       <li key={index} className={styles.item}>
         <Skeleton active avatar title paragraph={{ rows: 2 }} />
       </li>
-    ));
-};
+    ))
+}

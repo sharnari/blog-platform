@@ -1,5 +1,5 @@
 .title {
-  color: #1890FF;
+  color: #1890ff;
   font-weight: 400;
   font-size: 20px;
   margin: 0;
@@ -21,18 +21,17 @@
   display: flex;
   flex-wrap: wrap;
 }
-  
-  .likesCount {
-    vertical-align: middle;
-  }
-  
+
+.likesCount {
+  vertical-align: middle;
+}
+
 .likes {
   flex: auto;
 }
 
 .tagsContainer {
   width: 100%;
-  
 }
 
 .postHeader {

@@ -1,48 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  fetchArticle,
-  fetchDeleteLike,
-  fetchSetLike,
-} from "../../features/articles/articlesSlice";
+import React, { useEffect, useState } from 'react'
+import { format } from 'date-fns'
+import { Avatar } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { fetchDeleteLike, fetchSetLike } from '../../features/articles/articlesSlice'
+import PropTypes from 'prop-types'
 
-import styles from "./post-item.module.scss";
+import styles from './post-item.module.scss'
 
-import likeIcon from "../../assets/like.svg";
-import likeActiveIcon from "../../assets/like-active.svg";
+import likeIcon from '../../assets/like.svg'
+import likeActiveIcon from '../../assets/like-active.svg'
 
 const PostItem = ({ post }) => {
-  const dispatch = useDispatch();
-  const [favorited, setFavorited] = useState(post.favorited);
-  const [favoritesCount, setFavoritesCount] = useState(post.favoritesCount);
+  const dispatch = useDispatch()
+  const [favorited, setFavorited] = useState(post.favorited)
+  const [favoritesCount, setFavoritesCount] = useState(post.favoritesCount)
 
   useEffect(() => {
     if (post) {
-      setFavorited(post.favorited);
-      setFavoritesCount(post.favoritesCount);
+      setFavorited(post.favorited)
+      setFavoritesCount(post.favoritesCount)
     }
-  }, [post]);
+  }, [post])
 
   const handlerLike = async () => {
     try {
       if (favorited) {
-        await dispatch(fetchDeleteLike(post.slug));
-        setFavoritesCount((prevCount) => prevCount - 1);
-        setFavorited(false);
-        await dispatch(fetchSetLike(post.slug));
-        setFavoritesCount((prevCount) => prevCount + 1);
-        setFavorited(true);
+        dispatch(fetchDeleteLike(post.slug))
+        setFavoritesCount((prevCount) => prevCount - 1)
+        setFavorited(false)
+        dispatch(fetchSetLike(post.slug))
+        setFavoritesCount((prevCount) => prevCount + 1)
+        setFavorited(true)
       }
-    } catch (error) {
+    } catch (error) {console.error(error)}
+  }
 
-    }
-  };
-
-  const createdAt = format(new Date(post.createdAt), "MMMM d, yyyy");
+  const createdAt = format(new Date(post.createdAt), 'MMMM d, yyyy')
 
   return (
     <React.Fragment>
@@ -53,11 +48,7 @@ const PostItem = ({ post }) => {
           </Link>
           <div className={styles.likes}>
             <button type="button" onClick={handlerLike}>
-              <img
-                src={favorited ? likeActiveIcon : likeIcon}
-                alt="like"
-                className={styles.likeIcon}
-              />
+              <img src={favorited ? likeActiveIcon : likeIcon} alt="like" className={styles.likeIcon} />
             </button>
             <span className={styles.likesCount}> {favoritesCount}</span>
           </div>
@@ -84,12 +75,29 @@ const PostItem = ({ post }) => {
         </div>
       </div>
       <div className="post-body">
-        <p className={[styles.postBodyText, styles.textСlamp].join(" ")}>
-          {post.description}
-        </p>
+        <p className={[styles.postBodyText, styles.textСlamp].join(' ')}>{post.description}</p>
       </div>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default PostItem;
+PostItem.propTypes = {
+  post: PropTypes.shape({
+    slug: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    tagList: PropTypes.arrayOf(PropTypes.string),
+    favorited: PropTypes.bool.isRequired,
+    favoritesCount: PropTypes.number.isRequired,
+    author: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      following: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
+}
+
+export default PostItem

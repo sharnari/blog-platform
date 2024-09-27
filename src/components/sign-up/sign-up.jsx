@@ -1,20 +1,20 @@
-import { Button, Form, Input, Checkbox } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../features/auth/authSlice";
-import { useEffect } from "react";
-import { ErrorMessage } from "../error-message/error-message";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { setError } from "../../features/auth/authSlice";
+import { Button, Form, Input, Checkbox } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../../features/auth/authSlice'
+import { useEffect } from 'react'
+import { ErrorMessage } from '../error-message/error-message'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { setError } from '../../features/auth/authSlice'
 
-import styles from "./sing-up.module.scss";
+import styles from './sing-up.module.scss'
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const userError = useSelector((state) => state.auth.error);
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const userError = useSelector((state) => state.auth.error)
+  const userInfo = useSelector((state) => state.auth.userInfo)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
 
   const onFinish = ({ username, email, password }) => {
     const userData = {
@@ -23,30 +23,30 @@ const SignUp = () => {
         email,
         password,
       },
-    };
-    
-    console.log("Success:", userData);
-    dispatch(registerUser(userData));
-    setRegistrationSuccess(true);
-  };
+    }
+
+    console.log('Success:', userData)
+    dispatch(registerUser(userData))
+    setRegistrationSuccess(true)
+  }
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+    console.log('Failed:', errorInfo)
+  }
 
-  const { contextHolder, showError } = ErrorMessage();
+  const { contextHolder, showError } = ErrorMessage()
 
   useEffect(() => {
     if (userError) {
-      console.log(userError);
-      showError(userError);
+      console.log(userError)
+      showError(userError)
     } else if (userInfo && registrationSuccess) {
-      navigate("/sign-in");
+      navigate('/sign-in')
     }
     return () => {
       dispatch(setError(null))
     }
-  }, [ dispatch, userError, showError, navigate, userInfo, registrationSuccess]);
+  }, [dispatch, userError, showError, navigate, userInfo, registrationSuccess])
 
   return (
     <section className={styles.form}>
@@ -78,12 +78,12 @@ const SignUp = () => {
           rules={[
             {
               required: true,
-              message: "Username is required",
+              message: 'Username is required',
             },
             {
               min: 3,
               max: 20,
-              message: "Username must be between 3 and 20 characters",
+              message: 'Username must be between 3 and 20 characters',
             },
           ]}
         >
@@ -96,11 +96,11 @@ const SignUp = () => {
           rules={[
             {
               required: true,
-              message: "Email address is required",
+              message: 'Email address is required',
             },
             {
-              type: "email",
-              message: "The input is not valid E-mail!",
+              type: 'email',
+              message: 'The input is not valid E-mail!',
             },
           ]}
         >
@@ -113,12 +113,12 @@ const SignUp = () => {
           rules={[
             {
               required: true,
-              message: "Please input your password!",
+              message: 'Please input your password!',
             },
             {
               min: 6,
               max: 40,
-              message: "Password must be between 6 and 40 characters",
+              message: 'Password must be between 6 and 40 characters',
             },
           ]}
         >
@@ -130,14 +130,14 @@ const SignUp = () => {
           rules={[
             {
               required: true,
-              message: "Please input your password!",
+              message: 'Please input your password!',
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
                 }
-                return Promise.reject(new Error("Passwords must match"));
+                return Promise.reject(new Error('Passwords must match'))
               },
             }),
           ]}
@@ -153,17 +153,11 @@ const SignUp = () => {
               validator: (_, value) =>
                 value
                   ? Promise.resolve()
-                  : Promise.reject(
-                      new Error(
-                        "You must agree to the processing of your personal information!"
-                      )
-                    ),
+                  : Promise.reject(new Error('You must agree to the processing of your personal information!')),
             },
           ]}
         >
-          <Checkbox>
-            I agree to the processing of my personal information
-          </Checkbox>
+          <Checkbox>I agree to the processing of my personal information</Checkbox>
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -171,14 +165,14 @@ const SignUp = () => {
             span: 24,
           }}
         >
-          <Button size={"large"} type="primary" htmlType="submit" block>
+          <Button size={'large'} type="primary" htmlType="submit" block>
             Create
           </Button>
         </Form.Item>
       </Form>
       <div className={styles.bottomForm}>
         <p>
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/sign-in" className={styles.noUnderline}>
             Sign In
           </Link>
@@ -186,7 +180,7 @@ const SignUp = () => {
         </p>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

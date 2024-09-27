@@ -9,7 +9,8 @@
   flex-direction: column;
   align-items: center;
   opacity: 0.1;
-  p, h1 {
+  p,
+  h1 {
     width: fit-content;
     margin: 0;
   }
@@ -17,4 +18,3 @@
     font-size: 90px;
   }
 }
-
