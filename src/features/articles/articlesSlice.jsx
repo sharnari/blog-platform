@@ -175,7 +175,6 @@ const articlesSlice = createSlice({
       })
 
       .addCase(fetchSetLike.pending, (state) => {
-        state.statusLoading = true
         state.statusError = null
       })
       .addCase(fetchSetLike.fulfilled, (state) => {
@@ -188,7 +187,6 @@ const articlesSlice = createSlice({
       })
 
       .addCase(fetchDeleteLike.pending, (state) => {
-        state.statusLoading = true
         state.statusError = null
       })
       .addCase(fetchDeleteLike.fulfilled, (state) => {

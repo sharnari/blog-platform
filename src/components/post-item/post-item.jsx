@@ -19,6 +19,7 @@ const PostItem = ({ post }) => {
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
   const token = useSelector((state) => state.auth.token)
+
   // useEffect(() => {
   // }, [])
 
