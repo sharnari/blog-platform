@@ -93,6 +93,13 @@ const articlesSlice = createSlice({
     setCurrentArticle(state, action) {
       state.currentArticle = action.payload
     },
+    updateArticle(state, action) {
+      const updatedArticle = action.payload
+      const index = state.articles.findIndex((article) => article.slug === updatedArticle.slug)
+      if (index !== -1) {
+        state.articles[index] = updatedArticle
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -195,6 +202,6 @@ const articlesSlice = createSlice({
   },
 })
 
-export const { changePageOfPagination, setEditMode, setCurrentArticle } = articlesSlice.actions
+export const { changePageOfPagination, setEditMode, setCurrentArticle, updateArticle } = articlesSlice.actions
 
 export default articlesSlice.reducer

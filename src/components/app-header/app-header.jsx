@@ -21,6 +21,11 @@ const theme = {
 }
 
 const AppHeader = () => {
+  const pathArticle = 'articles'
+  const pathSignIn = 'sign-in'
+  const pathSignUp = 'sign-up'
+  const pathProfile = 'profile'
+  const pathNewArticle = 'new-article'
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // const signInAuth = useSelector((state) => state.auth.signInAuth);
@@ -39,13 +44,13 @@ const AppHeader = () => {
   return (
     <div className={styles.header}>
       <div className={styles.nameBlog}>
-        <Link style={{ textDecoration: 'none' }} to="articles">
+        <Link style={{ textDecoration: 'none' }} to={pathArticle}>
           <h1>Realworld Blog</h1>
         </Link>
       </div>
       {!token ? (
         <nav className={styles.NavButton}>
-          <Link style={{ color: 'black' }} to="sign-in">
+          <Link style={{ color: 'black' }} to={pathSignIn}>
             <Button className={styles.SignIn} type="text">
               <Title level={4} className={styles.sign}>
                 Sing In
@@ -53,7 +58,7 @@ const AppHeader = () => {
             </Button>
           </Link>
           <ConfigProvider theme={theme}>
-            <Link to="sign-up" style={{ color: '#52C41A' }}>
+            <Link to={pathSignUp} style={{ color: '#52C41A' }}>
               <Button className={styles.SignUp}>
                 <Title level={4} className={styles.sign}>
                   Sign Up
@@ -65,7 +70,7 @@ const AppHeader = () => {
       ) : (
         <nav className={styles.NavButton}>
           <ConfigProvider theme={theme}>
-            <Link to="new-article">
+            <Link to={pathNewArticle}>
               <Button className={styles.SignUp} onClick={setMode}>
                 <Title level={4} className={styles.sign}>
                   Create article
@@ -73,7 +78,7 @@ const AppHeader = () => {
               </Button>
             </Link>
           </ConfigProvider>
-          <Link to="profile">
+          <Link to={pathProfile}>
             <Button className={styles.SignIn} type="text">
               <Title level={4} className={styles.sign}>
                 {userInfo?.username}

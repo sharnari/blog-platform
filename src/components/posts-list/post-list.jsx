@@ -20,8 +20,8 @@ const PostList = () => {
     <div className="container">
       <ul className={styles.posts}>
         {!statusLoading && !statusError
-          ? articles.map((el, index) => (
-              <li key={index} className={styles.item}>
+          ? articles.map((el) => (
+              <li key={el.slug} className={styles.item}>
                 <PostItem post={el} />
               </li>
             ))

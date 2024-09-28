@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchDeleteLike, fetchSetLike } from '../../features/articles/articlesSlice'
 import PropTypes from 'prop-types'
 import uniqid from 'uniqid'
@@ -14,9 +14,13 @@ import likeIcon from '../../assets/like.svg'
 import likeActiveIcon from '../../assets/like-active.svg'
 
 const PostItem = ({ post }) => {
+  const articlesSlug = `/articles/${post.slug}`
   const dispatch = useDispatch()
-  const [favorited, setFavorited] = useState(post.favorited)
-  const [favoritesCount, setFavoritesCount] = useState(post.favoritesCount)
+  const [favorited, setFavorited] = useState(false)
+  const [favoritesCount, setFavoritesCount] = useState(0)
+  const token = useSelector((state) => state.auth.token)
+  // useEffect(() => {
+  // }, [])
 
   useEffect(() => {
     if (post) {
@@ -25,17 +29,20 @@ const PostItem = ({ post }) => {
     }
   }, [post])
 
-  const handlerLike = async () => {
-    try {
-      if (favorited) {
-        dispatch(fetchDeleteLike(post.slug))
+  const handlerLike = () => {
+    let success = false
+    if (favorited) {
+      success = dispatch(fetchDeleteLike(post.slug))
+      if (success) {
         setFavoritesCount((prevCount) => prevCount - 1)
-        setFavorited(false)
-        dispatch(fetchSetLike(post.slug))
-        setFavoritesCount((prevCount) => prevCount + 1)
-        setFavorited(true)
       }
-    } catch (error) {console.error(error)}
+    } else {
+      success = dispatch(fetchSetLike(post.slug))
+      if (success) {
+        setFavoritesCount((prevCount) => prevCount + 1)
+      }
+    }
+    setFavorited((prev) => !prev)
   }
 
   const createdAt = format(new Date(post.createdAt), 'MMMM d, yyyy')
@@ -44,13 +51,17 @@ const PostItem = ({ post }) => {
     <React.Fragment>
       <div className={styles.postHeader}>
         <div className={styles.postName}>
-          <Link to={`/articles/${post.slug}`} className={styles.title}>
+          <Link to={articlesSlug} className={styles.title}>
             {post.title}
           </Link>
           <div className={styles.likes}>
-            <button type="button" onClick={handlerLike}>
+            {token ? (
+              <button className={styles.hiddenButton} onClick={handlerLike}>
+                <img src={favorited ? likeActiveIcon : likeIcon} alt="like" className={styles.likeIcon} />
+              </button>
+            ) : (
               <img src={favorited ? likeActiveIcon : likeIcon} alt="like" className={styles.likeIcon} />
-            </button>
+            )}
             <span className={styles.likesCount}> {favoritesCount}</span>
           </div>
           <div className={styles.tagsContainer}>
@@ -72,6 +83,10 @@ const PostItem = ({ post }) => {
             size={58}
             src={post.author.image ? post.author.image : null}
             icon={!post.author.image ? <UserOutlined /> : null}
+            onError={(e) => {
+              e.target.onerror = null
+              e.target.src = ''
+            }}
           />
         </div>
       </div>

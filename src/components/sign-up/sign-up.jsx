@@ -10,6 +10,7 @@ import { setError } from '../../features/auth/authSlice'
 import styles from './sing-up.module.scss'
 
 const SignUp = () => {
+  const singIn = '/sign-in'
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const userError = useSelector((state) => state.auth.error)
@@ -173,7 +174,7 @@ const SignUp = () => {
       <div className={styles.bottomForm}>
         <p>
           Already have an account?{' '}
-          <Link to="/sign-in" className={styles.noUnderline}>
+          <Link to={singIn} className={styles.noUnderline}>
             Sign In
           </Link>
           .

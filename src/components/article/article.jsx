@@ -24,6 +24,7 @@ const Article = () => {
   const navigate = useNavigate()
   const post = useSelector((state) => state.articles.currentArticle)
   const userName = useSelector((state) => state.auth.userInfo?.username)
+  const token = useSelector((state) => state.auth.token)
 
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
@@ -44,13 +45,18 @@ const Article = () => {
     navigate('/')
   }
 
-  const handlerLike = () => {
+  const handlerLike = async () => {
+    let success = false
     if (favorited) {
-      dispatch(fetchDeleteLike(post.slug))
-      setFavoritesCount((prevCount) => prevCount - 1)
+      success = dispatch(fetchDeleteLike(post.slug))
+      if (success) {
+        setFavoritesCount((prevCount) => prevCount - 1)
+      }
     } else {
-      dispatch(fetchSetLike(post.slug))
-      setFavoritesCount((prevCount) => prevCount + 1)
+      success = dispatch(fetchSetLike(post.slug))
+      if (success) {
+        setFavoritesCount((prevCount) => prevCount + 1)
+      }
     }
     setFavorited((prev) => !prev)
   }
@@ -93,9 +99,13 @@ const Article = () => {
         <div className={styles.postName}>
           <h5 className={styles.title}>{post.title}</h5>
           <div className={styles.likes}>
-            <button onClick={handlerLike}>
+            {token ? (
+              <button className={styles.hiddenButton} onClick={handlerLike}>
+                <img src={favorited ? likeActiveIcon : likeIcon} alt="like" className={styles.likeIcon} />
+              </button>
+            ) : (
               <img src={favorited ? likeActiveIcon : likeIcon} alt="like" className={styles.likeIcon} />
-            </button>
+            )}
             <span className={styles.likesCount}> {favoritesCount}</span>
           </div>
           <div className={styles.tagsContainer}>
@@ -124,6 +134,10 @@ const Article = () => {
               size={58}
               src={post.author.image ? post.author.image : null}
               icon={!post.author.image ? <UserOutlined /> : null}
+              onError={(e) => {
+                e.target.onerror = null
+                e.target.src = ''
+              }}
             />
           </div>
           {post.author.username === userName && EditDelete}
