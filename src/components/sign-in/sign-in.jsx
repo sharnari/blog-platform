@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { setError } from '../../features/auth/authSlice'
 
 import styles from './sign-in.module.scss'
-import { routesName } from "../../router/routes"
+import { routesName } from '../../router/routes'
 
 const SignIn = () => {
   const dispatch = useDispatch()
@@ -89,7 +89,7 @@ const SignIn = () => {
             },
           ]}
         >
-          <Input placeholder="Email address" />
+          <Input type="email" placeholder="Email address" />
         </Form.Item>
 
         <Form.Item
@@ -102,7 +102,7 @@ const SignIn = () => {
             },
           ]}
         >
-          <Input.Password placeholder="Password" />
+          <Input.Password type='password' placeholder="Password" />
         </Form.Item>
         <Form.Item
           wrapperCol={{

@@ -105,7 +105,7 @@ const EditProfile = () => {
             },
           ]}
         >
-          <Input placeholder="Email address" />
+          <Input type="email" placeholder="Email address" />
         </Form.Item>
         <Form.Item
           label="New password"
@@ -122,7 +122,7 @@ const EditProfile = () => {
             },
           ]}
         >
-          <Input.Password placeholder="New password" />
+          <Input.Password type="password" placeholder="New password" />
         </Form.Item>
         <Form.Item
           label="Avatar image (url)"
@@ -134,7 +134,7 @@ const EditProfile = () => {
             },
           ]}
         >
-          <Input placeholder="Avatar image" />
+          <Input type="url" placeholder="Avatar image" />
         </Form.Item>
         <Form.Item
           wrapperCol={{
