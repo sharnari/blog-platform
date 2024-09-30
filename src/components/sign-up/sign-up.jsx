@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { setError } from '../../features/auth/authSlice'
 
-import { routesName } from "../../router/routes"
+import { routesName } from '../../router/routes'
 
 import styles from './sing-up.module.scss'
 
@@ -106,7 +106,7 @@ const SignUp = () => {
             },
           ]}
         >
-          <Input placeholder="Email address" />
+          <Input type="email" placeholder="Email address" />
         </Form.Item>
 
         <Form.Item
@@ -124,7 +124,7 @@ const SignUp = () => {
             },
           ]}
         >
-          <Input.Password placeholder="Password" />
+          <Input.Password type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item
           label="Repeat Password"
@@ -144,7 +144,7 @@ const SignUp = () => {
             }),
           ]}
         >
-          <Input.Password placeholder="Password" />
+          <Input.Password type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item
           name="remember"
@@ -175,7 +175,7 @@ const SignUp = () => {
       <div className={styles.bottomForm}>
         <p>
           Already have an account?{' '}
-          <Link to={routesName.pathSignIn} className={styles.noUnderline}>
+          <Link to={`/${routesName.pathSignIn}`} className={styles.noUnderline}>
             Sign In
           </Link>
           .

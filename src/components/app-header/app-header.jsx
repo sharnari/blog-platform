@@ -55,7 +55,7 @@ const AppHeader = () => {
             </Button>
           </Link>
           <ConfigProvider theme={theme}>
-            <Link to={routesName.SignUp} style={{ color: '#52C41A' }}>
+            <Link to={routesName.pathSignUp} style={{ color: '#52C41A' }}>
               <Button className={styles.SignUp}>
                 <Title level={4} className={styles.sign}>
                   Sign Up

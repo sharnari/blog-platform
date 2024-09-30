@@ -118,7 +118,7 @@ const SignIn = () => {
       <div className={styles.bottomForm}>
         <p>
           Don’t have an account?{' '}
-          <Link to={routesName.pathSignIn} className={styles.noUnderline}>
+          <Link to={`/${routesName.pathSignUp}`} className={styles.noUnderline}>
             Sign Up
           </Link>
           .
