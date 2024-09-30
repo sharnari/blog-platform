@@ -7,10 +7,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { setError } from '../../features/auth/authSlice'
 
+import { routesName } from "../../router/routes"
+
 import styles from './sing-up.module.scss'
 
 const SignUp = () => {
-  const singIn = '/sign-in'
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const userError = useSelector((state) => state.auth.error)
@@ -42,7 +43,7 @@ const SignUp = () => {
       console.log(userError)
       showError(userError)
     } else if (userInfo && registrationSuccess) {
-      navigate('/sign-in')
+      navigate(`/${routesName.pathSignIn}`)
     }
     return () => {
       dispatch(setError(null))
@@ -174,7 +175,7 @@ const SignUp = () => {
       <div className={styles.bottomForm}>
         <p>
           Already have an account?{' '}
-          <Link to={singIn} className={styles.noUnderline}>
+          <Link to={routesName.pathSignIn} className={styles.noUnderline}>
             Sign In
           </Link>
           .

@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { routesName } from "../../router/routes"
 
-const articlesURL = '/articles'
+
+const articlesURL = `/${routesName.pathArticle}`
 
 const apiClient = axios.create({
   baseURL: 'https://blog.kata.academy/api',
@@ -24,7 +26,7 @@ apiClient.interceptors.request.use(
   }
 )
 
-export const fetchArticles = createAsyncThunk('articles/fetchActicles', async function (offset) {
+export const fetchArticles = createAsyncThunk(`${routesName.pathArticle}/fetchActicles`, async function (offset) {
   const response = await apiClient.get(`${articlesURL}`, {
     params: {
       limit: 5,
@@ -37,36 +39,36 @@ export const fetchArticles = createAsyncThunk('articles/fetchActicles', async fu
   return await response.data
 })
 
-export const fetchArticle = createAsyncThunk('articles/fetchActicle', async function (slug) {
-  const response = await apiClient.get(`/articles/${slug}`)
+export const fetchArticle = createAsyncThunk(`${routesName.pathArticle}/fetchActicle`, async function (slug) {
+  const response = await apiClient.get(`/${routesName.pathArticle}/${slug}`)
   if (response.status < 200 || response.status > 299) {
-    throw new Error(`Could not fetch /article/${slug} received ${response.status}`)
+    throw new Error(`Could not fetch /${routesName.pathArticle}/${slug} received ${response.status}`)
   }
   return await response.data.article
 })
 
-export const fetchMakeArticle = createAsyncThunk('articles/makeArticle', async function (articleData) {
-  const response = await apiClient.post('/articles', articleData)
+export const fetchMakeArticle = createAsyncThunk(`${routesName.pathArticle}/makeArticle`, async function (articleData) {
+  const response = await apiClient.post(`/${routesName.pathArticle}`, articleData)
   return response.data
 })
 
-export const fetchUpdateArticle = createAsyncThunk('articles/updateArticle', async function ({ articleData, slug }) {
-  const response = await apiClient.put(`/articles/${slug}`, articleData)
+export const fetchUpdateArticle = createAsyncThunk(`${routesName.pathArticle}/updateArticle`, async function ({ articleData, slug }) {
+  const response = await apiClient.put(`/${routesName.pathArticle}/${slug}`, articleData)
   return response.data
 })
 
-export const fetchDeleteArticle = createAsyncThunk('articles/deleteArticle', async function (slug) {
-  const response = await apiClient.delete(`/articles/${slug}`)
+export const fetchDeleteArticle = createAsyncThunk(`${routesName.pathArticle}/deleteArticle`, async function (slug) {
+  const response = await apiClient.delete(`/${routesName.pathArticle}/${slug}`)
   return response.data
 })
 
-export const fetchSetLike = createAsyncThunk('articles/setLike', async function (slug) {
-  const response = await apiClient.post(`/articles/${slug}/favorite`)
+export const fetchSetLike = createAsyncThunk(`${routesName.pathArticle}/setLike`, async function (slug) {
+  const response = await apiClient.post(`/${routesName.pathArticle}/${slug}/favorite`)
   return response.data
 })
 
-export const fetchDeleteLike = createAsyncThunk('articles/deleteLike', async function (slug) {
-  const response = await apiClient.delete(`/articles/${slug}/favorite`)
+export const fetchDeleteLike = createAsyncThunk(`${routesName.pathArticle}/deleteLike`, async function (slug) {
+  const response = await apiClient.delete(`/${routesName.pathArticle}/${slug}/favorite`)
   return response.data
 })
 

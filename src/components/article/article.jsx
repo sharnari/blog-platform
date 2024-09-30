@@ -15,6 +15,8 @@ import {
   fetchSetLike,
 } from '../../features/articles/articlesSlice'
 import { useNavigate } from 'react-router-dom'
+import { routesName } from "../../router/routes"
+
 
 import avatarImage from '../../assets/avatar.png'
 
@@ -77,7 +79,7 @@ const Article = () => {
       <Button
         onClick={() => {
           dispatch(setEditMode(true))
-          navigate(`/articles/${slug}/edit`)
+          navigate(`/${routesName.pathArticle}/${slug}/edit`)
         }}
       >
         Edit

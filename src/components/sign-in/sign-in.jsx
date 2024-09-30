@@ -8,9 +8,9 @@ import { useState } from 'react'
 import { setError } from '../../features/auth/authSlice'
 
 import styles from './sign-in.module.scss'
+import { routesName } from "../../router/routes"
 
 const SignIn = () => {
-  const signIn = '/sign-up'
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const userError = useSelector((state) => state.auth.error)
@@ -44,7 +44,7 @@ const SignIn = () => {
       showError(userError)
     } else if (userInfo && signInSuccess) {
       dispatch(setSignIn(true))
-      navigate('/articles')
+      navigate(`/${routesName.pathArticle}`)
     }
     return () => {
       dispatch(setError(null))
@@ -118,7 +118,7 @@ const SignIn = () => {
       <div className={styles.bottomForm}>
         <p>
           Don’t have an account?{' '}
-          <Link to={signIn} className={styles.noUnderline}>
+          <Link to={routesName.pathSignIn} className={styles.noUnderline}>
             Sign Up
           </Link>
           .

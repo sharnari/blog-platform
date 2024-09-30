@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changePageOfPagination } from '../../features/articles/articlesSlice'
 import { ErrorMessage } from '../error-message/error-message'
 import Article from '../article'
-import { useEffect } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import SignIn from '../sign-in'
 import SignUp from '../sign-up'
 import EditProfile from '../edit-profile'
@@ -13,6 +13,7 @@ import NotFound from '../not-found'
 import CreateArticle from '../create-article'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { setSignIn, getCurrentUser, setToken } from '../../features/auth/authSlice'
+import { routesName } from '../../router/routes'
 
 import styles from './App.module.scss'
 
@@ -30,6 +31,7 @@ const theme = {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
   const changePage = (page) => dispatch(changePageOfPagination(page))
   const currentItemOfPagination = useSelector((state) => state.articles.pagination.currentItem)
@@ -38,20 +40,28 @@ function App() {
   const token = useSelector((state) => state.auth.token)
   const pageSize = 5
   const { contextHolder, showError } = ErrorMessage()
+
+  const storedToken = useMemo(() => localStorage.getItem('token'), []);
+  
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      dispatch(setSignIn(true))
-      dispatch(getCurrentUser(token))
-      dispatch(setToken(token))
+    if (storedToken) {
+      dispatch(setSignIn(true));
+      dispatch(getCurrentUser(storedToken));
+      dispatch(setToken(storedToken));
     }
-  }, [dispatch])
+    setLoading(false);
+  }, [dispatch, storedToken]);
 
   useEffect(() => {
     if (statusError) {
       showError(statusError)
     }
   }, [statusError, showError])
+
+ if (loading) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <Router>
@@ -80,12 +90,12 @@ function App() {
               </>
             }
           />
-          <Route path="/articles/:slug" element={<Article />} />
-          <Route path="/sign-in" element={!token ? <SignIn /> : <Navigate to="/articles" replace />} />
-          <Route path="/sign-up" element={!token ? <SignUp /> : <Navigate to="/articles" replace />} />
-          <Route path="/profile" element={token ? <EditProfile /> : <Navigate to="/sign-in" replace />} />
-          <Route path="new-article" element={token ? <CreateArticle /> : <Navigate to="/sign-in" replace />} />
-          <Route path="articles/:slug/edit" element={token ? <CreateArticle /> : <Navigate to="/sign-in" replace />} />
+          <Route path={`/${routesName.pathArticle}/:slug` } element={<Article />} />
+          <Route path={`/${routesName.pathSignIn}` } element={!token ? <SignIn /> : <Navigate to={`/${routesName.pathArticle}` } replace />} />
+          <Route path={`/${routesName.pathSignUp}` } element={!token ? <SignUp /> : <Navigate to={`/${routesName.pathArticle}` } replace />} />
+          <Route path={`/${routesName.pathProfile}` } element={token ? <EditProfile /> : <Navigate to={`/${routesName.pathSignUp}` } replace />} />
+          <Route path={`/${routesName.pathNewArticle}` } element={token ? <CreateArticle /> : <Navigate to={`/${routesName.pathSignIn}` } replace />} />
+          <Route path={`/${routesName.pathArticle}/:slug/edit` } element={token ? <CreateArticle /> : <Navigate to={`/${routesName.pathSignIn}` } replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

@@ -6,12 +6,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Avatar } from 'antd'
 import { logOutUser } from '../../features/auth/authSlice'
 import { setEditMode } from '../../features/articles/articlesSlice'
+import { routesName } from "../../router/routes"
+
+import avatarImage from '../../assets/avatar.png'
 
 import styles from './app-header.module.scss'
 
 const { Title } = Typography
-
-import avatarImage from '../../assets/avatar.png'
 
 const theme = {
   token: {
@@ -23,14 +24,8 @@ const theme = {
 }
 
 const AppHeader = () => {
-  const pathArticle = 'articles'
-  const pathSignIn = 'sign-in'
-  const pathSignUp = 'sign-up'
-  const pathProfile = 'profile'
-  const pathNewArticle = 'new-article'
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const signInAuth = useSelector((state) => state.auth.signInAuth);
   const userInfo = useSelector((state) => state.auth.userInfo)
   const token = useSelector((state) => state.auth.token)
 
@@ -46,13 +41,13 @@ const AppHeader = () => {
   return (
     <div className={styles.header}>
       <div className={styles.nameBlog}>
-        <Link style={{ textDecoration: 'none' }} to={pathArticle}>
+        <Link style={{ textDecoration: 'none' }} to={routesName.pathArticle}>
           <h1>Realworld Blog</h1>
         </Link>
       </div>
       {!token ? (
         <nav className={styles.NavButton}>
-          <Link style={{ color: 'black' }} to={pathSignIn}>
+          <Link style={{ color: 'black' }} to={routesName.pathSignIn}>
             <Button className={styles.SignIn} type="text">
               <Title level={4} className={styles.sign}>
                 Sing In
@@ -60,7 +55,7 @@ const AppHeader = () => {
             </Button>
           </Link>
           <ConfigProvider theme={theme}>
-            <Link to={pathSignUp} style={{ color: '#52C41A' }}>
+            <Link to={routesName.SignUp} style={{ color: '#52C41A' }}>
               <Button className={styles.SignUp}>
                 <Title level={4} className={styles.sign}>
                   Sign Up
@@ -72,7 +67,7 @@ const AppHeader = () => {
       ) : (
         <nav className={styles.NavButton}>
           <ConfigProvider theme={theme}>
-            <Link to={pathNewArticle}>
+            <Link to={routesName.pathNewArticle}>
               <Button className={styles.SignUp} onClick={setMode}>
                 <Title level={4} className={styles.sign}>
                   Create article
@@ -80,7 +75,7 @@ const AppHeader = () => {
               </Button>
             </Link>
           </ConfigProvider>
-          <Link to={pathProfile}>
+          <Link to={routesName.pathProfile}>
             <Button className={styles.SignIn} type="text">
               <Title level={4} className={styles.sign}>
                 {userInfo?.username}

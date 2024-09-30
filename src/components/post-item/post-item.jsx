@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDeleteLike, fetchSetLike } from '../../features/articles/articlesSlice'
 import PropTypes from 'prop-types'
 import uniqid from 'uniqid'
+import { routesName } from "../../router/routes"
 
 import styles from './post-item.module.scss'
 
@@ -16,7 +17,7 @@ import likeActiveIcon from '../../assets/like-active.svg'
 import avatarImage from '../../assets/avatar.png'
 
 const PostItem = ({ post }) => {
-  const articlesSlug = `/articles/${post.slug}`
+  const articlesSlug = `/${routesName.pathArticle}/${post.slug}`
   const dispatch = useDispatch()
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
