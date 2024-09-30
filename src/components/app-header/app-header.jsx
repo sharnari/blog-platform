@@ -11,6 +11,8 @@ import styles from './app-header.module.scss'
 
 const { Title } = Typography
 
+import avatarImage from '../../assets/avatar.png'
+
 const theme = {
   token: {
     colorPrimary: '#52C41A',
@@ -87,6 +89,10 @@ const AppHeader = () => {
                 size={48}
                 src={userInfo?.image ? userInfo.image : null}
                 icon={!userInfo?.image ? <UserOutlined /> : null}
+                onError={(e) => {
+                  e.target.onerror = null
+                  e.target.src = { avatarImage }
+                }}
               />
             </Button>
           </Link>

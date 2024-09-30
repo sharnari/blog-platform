@@ -16,6 +16,8 @@ import {
 } from '../../features/articles/articlesSlice'
 import { useNavigate } from 'react-router-dom'
 
+import avatarImage from '../../assets/avatar.png'
+
 import styles from './article.module.scss'
 
 const Article = () => {
@@ -136,7 +138,7 @@ const Article = () => {
               icon={!post.author.image ? <UserOutlined /> : null}
               onError={(e) => {
                 e.target.onerror = null
-                e.target.src = ''
+                e.target.src = { avatarImage }
               }}
             />
           </div>

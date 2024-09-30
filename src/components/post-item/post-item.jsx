@@ -13,15 +13,14 @@ import styles from './post-item.module.scss'
 import likeIcon from '../../assets/like.svg'
 import likeActiveIcon from '../../assets/like-active.svg'
 
+import avatarImage from '../../assets/avatar.png'
+
 const PostItem = ({ post }) => {
   const articlesSlug = `/articles/${post.slug}`
   const dispatch = useDispatch()
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
   const token = useSelector((state) => state.auth.token)
-
-  // useEffect(() => {
-  // }, [])
 
   useEffect(() => {
     if (post) {
@@ -86,7 +85,7 @@ const PostItem = ({ post }) => {
             icon={!post.author.image ? <UserOutlined /> : null}
             onError={(e) => {
               e.target.onerror = null
-              e.target.src = ''
+              e.target.src = { avatarImage }
             }}
           />
         </div>
