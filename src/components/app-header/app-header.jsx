@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Typography, ConfigProvider } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
@@ -7,8 +7,6 @@ import { Avatar } from 'antd'
 import { logOutUser } from '../../features/auth/authSlice'
 import { setEditMode } from '../../features/articles/articlesSlice'
 import { routesName } from "../../router/routes"
-
-import avatarImage from '../../assets/avatar.png'
 
 import styles from './app-header.module.scss'
 
@@ -28,6 +26,7 @@ const AppHeader = () => {
   const navigate = useNavigate()
   const userInfo = useSelector((state) => state.auth.userInfo)
   const token = useSelector((state) => state.auth.token)
+  const [isError, setIsError] = useState(false)
 
   const hanldeLogOut = () => {
     dispatch(logOutUser())
@@ -82,12 +81,9 @@ const AppHeader = () => {
               </Title>
               <Avatar
                 size={48}
-                src={userInfo?.image ? userInfo.image : null}
-                icon={!userInfo?.image ? <UserOutlined /> : null}
-                onError={(e) => {
-                  e.target.onerror = null
-                  e.target.src = { avatarImage }
-                }}
+                src={!isError && userInfo?.image ? userInfo.image : null}
+                icon={isError || !userInfo?.image ? <UserOutlined /> : null}
+                onError={() => setIsError(true)}
               />
             </Button>
           </Link>

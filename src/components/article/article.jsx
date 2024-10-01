@@ -17,9 +17,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { routesName } from "../../router/routes"
 
-
-import avatarImage from '../../assets/avatar.png'
-
 import styles from './article.module.scss'
 
 const Article = () => {
@@ -29,6 +26,7 @@ const Article = () => {
   const post = useSelector((state) => state.articles.currentArticle)
   const userName = useSelector((state) => state.auth.userInfo?.username)
   const token = useSelector((state) => state.auth.token)
+  const [isError, setIsError] = useState(false)
 
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
@@ -136,12 +134,10 @@ const Article = () => {
             </div>
             <Avatar
               size={58}
-              src={post.author.image ? post.author.image : null}
-              icon={!post.author.image ? <UserOutlined /> : null}
-              onError={(e) => {
-                e.target.onerror = null
-                e.target.src = { avatarImage }
-              }}
+              src={!isError && post.author?.image ? post.author.image : null}
+            icon={isError || !post.author?.image ? <UserOutlined /> : null}
+            onError={() => setIsError(true)}
+              
             />
           </div>
           {post.author.username === userName && EditDelete}

@@ -7,14 +7,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDeleteLike, fetchSetLike } from '../../features/articles/articlesSlice'
 import PropTypes from 'prop-types'
 import uniqid from 'uniqid'
-import { routesName } from "../../router/routes"
+import { routesName } from '../../router/routes'
 
 import styles from './post-item.module.scss'
 
 import likeIcon from '../../assets/like.svg'
 import likeActiveIcon from '../../assets/like-active.svg'
-
-import avatarImage from '../../assets/avatar.png'
 
 const PostItem = ({ post }) => {
   const articlesSlug = `/${routesName.pathArticle}/${post.slug}`
@@ -22,6 +20,7 @@ const PostItem = ({ post }) => {
   const [favorited, setFavorited] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
   const token = useSelector((state) => state.auth.token)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     if (post) {
@@ -82,12 +81,9 @@ const PostItem = ({ post }) => {
           </div>
           <Avatar
             size={58}
-            src={post.author.image ? post.author.image : null}
-            icon={!post.author.image ? <UserOutlined /> : null}
-            onError={(e) => {
-              e.target.onerror = null
-              e.target.src = { avatarImage }
-            }}
+            src={!isError && post.author?.image ? post.author.image : null}
+            icon={isError || !post.author?.image ? <UserOutlined /> : null}
+            onError={() => setIsError(true)}
           />
         </div>
       </div>
